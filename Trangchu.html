@@ -10,12 +10,9 @@
 <body>
   <!-- Sidebar bên trái -->
   <div class="sidebar">
-    <!-- Logo -->
     <div class="logo">
       <img src="https://img.icons8.com/color/48/open-book.png" alt="logo"/>
     </div>
-
-    <!-- Menu điều hướng -->
     <ul>
       <li><img src="https://img.icons8.com/ios-filled/24/home.png"/> Trang chủ</li>
       <li><img src="https://img.icons8.com/ios-filled/24/return-book.png"/> Mượn - Trả sách</li>
@@ -26,10 +23,8 @@
 
   <!-- Nội dung chính -->
   <div class="main">
-    <!-- Thanh trên cùng (Topbar) -->
     <div class="topbar">
       <h1>Trang web quản lý thư viện</h1>
-      <!-- Icon người dùng -->
       <div class="user-icon">
         <img src="https://img.icons8.com/ios-filled/40/user.png" alt="user"/>
       </div>
@@ -45,53 +40,94 @@
 
     <!-- Lưới hiển thị danh sách sách -->
     <div class="books-grid" id="booksGrid">
-
-      <!-- Một thẻ sách (book-card) -->
-      <div class="book-card">
-        <img src="https://upload.wikimedia.org/wikipedia/en/8/8e/The_Fellowship_of_the_Ring_cover.gif"/>
+      <div class="book-card" 
+           data-status="Có sẵn" 
+           data-type="Tiểu thuyết" 
+           data-volumes="image/vol1lotr.jpeg; image/vol2lotr.jpg; image/vol3lotr.jpg">
+        <img src="image/Lotr.webp"/>
         <h3>Lord Of The Ring</h3>
         <p>J.R.R. Tolkien</p>
-        <a href="#">Xem chi tiết</a>
+        <a href="#" class="details-btn">Xem chi tiết</a>
       </div>
 
-      <div class="book-card">
-        <img src="https://m.media-amazon.com/images/I/91dSMhdIzTL.jpg"/>
+      <div class="book-card" 
+           data-status="Đã mượn" 
+           data-type="Tiểu thuyết" 
+           data-volumes="image/asoiaf_vol1.jpg; image/asoiaf_vol2.jpg; image/asoiaf_vol3.jpg; image/asoiaf_vol4.jpg; image/asoiaf_vol5.jpg">
+        <img src="image/ASAIAF.webp"/>
         <h3>A Song Of Ice And Fire</h3>
         <p>George R.R. Martin</p>
-        <a href="#">Xem chi tiết</a>
+        <a href="#" class="details-btn">Xem chi tiết</a>
       </div>
 
-      <div class="book-card">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Kafka_Murakami.jpg"/>
+      <div class="book-card" 
+           data-status="Có sẵn" 
+           data-type="Tiểu thuyết" 
+           data-volumes="image/kafka_vol1.jpg">
+        <img src="image/Kafka.webp"/>
         <h3>Kafka bên bờ biển</h3>
         <p>Haruki Murakami</p>
-        <a href="#">Xem chi tiết</a>
+        <a href="#" class="details-btn">Xem chi tiết</a>
       </div>
 
-      <div class="book-card">
-        <img src="https://m.media-amazon.com/images/I/81w4nMRuF-L.jpg"/>
+      <div class="book-card" 
+           data-status="Bị hỏng" 
+           data-type="Thi ca" 
+           data-volumes="image/than_khuc_vol1.jpg">
+        <img src="image/Than khuc.webp"/>
         <h3>Thần khúc</h3>
         <p>Dante Alighieri</p>
-        <a href="#">Xem chi tiết</a>
+        <a href="#" class="details-btn">Xem chi tiết</a>
       </div>
 
-      <div class="book-card">
-        <img src="https://m.media-amazon.com/images/I/71P3CMp9fWL.jpg"/>
+      <div class="book-card" 
+           data-status="Có sẵn" 
+           data-type="Kịch" 
+           data-volumes="image/faust_vol1.jpg">
+        <img src="image/81JFOQXHjDL._SL1500_.jpg"/>
         <h3>Faust</h3>
         <p>Johann Wolfgang von Goethe</p>
-        <a href="#">Xem chi tiết</a>
+        <a href="#" class="details-btn">Xem chi tiết</a>
       </div>
 
-      <div class="book-card">
-        <img src="https://m.media-amazon.com/images/I/71KilybDOoL.jpg"/>
+      <div class="book-card" 
+           data-status="Có sẵn" 
+           data-type="Tiểu thuyết" 
+           data-volumes="image/idiot_vol1.jpg">
+        <img src="image/The Idiot.jpg"/>
         <h3>The Idiot</h3>
         <p>Fyodor Dostoyevsky</p>
-        <a href="#">Xem chi tiết</a>
+        <a href="#" class="details-btn">Xem chi tiết</a>
       </div>
     </div>
   </div>
 
+  <!-- Modal chi tiết sách -->
+  <div id="detailModal" class="modal hidden">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-content">
+      <button class="close-btn" id="closeModal">&times;</button>
+      <h2>Chi tiết sách</h2>
+      <div class="book-details">
+        <p><strong>Tên sách:</strong> <span id="detailTitle"></span></p>
+        <p><strong>Tác giả:</strong> <span id="detailAuthor"></span></p>
+        <p><strong>Loại sách:</strong> <span id="detailType"></span></p>
+        <p><strong>Tình trạng:</strong> <span id="detailStatus"></span></p>
+        <p><strong>Số tập:</strong> <span id="detailVolumesCount"></span></p>
+        <div id="detailVolumes" class="volumes-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay preview ảnh tập -->
+  <div id="volumePreview" class="volume-preview hidden">
+    <img id="previewImg" src="" alt="preview"/>
+  </div>
+
   <!-- File JS -->
   <script src="timkiem.js"></script>
+  <script src="chitietsach.js"></script>
+  <script src="home.js"></script>
+
 </body>
 </html>
