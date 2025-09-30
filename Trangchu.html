@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trang web quản lý thư viện</title>
+  <!-- Liên kết file CSS -->
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <!-- Sidebar bên trái -->
+  <div class="sidebar">
+    <!-- Logo -->
+    <div class="logo">
+      <img src="https://img.icons8.com/color/48/open-book.png" alt="logo"/>
+    </div>
+
+    <!-- Menu điều hướng -->
+    <ul>
+      <li><img src="https://img.icons8.com/ios-filled/24/home.png"/> Trang chủ</li>
+      <li><img src="https://img.icons8.com/ios-filled/24/return-book.png"/> Mượn - Trả sách</li>
+      <li><img src="https://img.icons8.com/ios-filled/24/chat.png"/> Chat</li>
+      <li><img src="https://img.icons8.com/ios-filled/24/combo-chart.png"/> Báo cáo thống kê</li>
+    </ul>
+  </div>
+
+  <!-- Nội dung chính -->
+  <div class="main">
+    <!-- Thanh trên cùng (Topbar) -->
+    <div class="topbar">
+      <h1>Trang web quản lý thư viện</h1>
+      <!-- Icon người dùng -->
+      <div class="user-icon">
+        <img src="https://img.icons8.com/ios-filled/40/user.png" alt="user"/>
+      </div>
+    </div>
+
+    <!-- Thanh tìm kiếm -->
+    <div class="search-bar">
+      <input type="text" placeholder="Tìm kiếm sách..." id="searchInput"/>
+      <button onclick="searchBooks()">
+        <img src="https://img.icons8.com/ios-filled/24/search.png"/>
+      </button>
+    </div>
+
+    <!-- Lưới hiển thị danh sách sách -->
+    <div class="books-grid" id="booksGrid">
+
+      <!-- Một thẻ sách (book-card) -->
+      <div class="book-card">
+        <img src="https://upload.wikimedia.org/wikipedia/en/8/8e/The_Fellowship_of_the_Ring_cover.gif"/>
+        <h3>Lord Of The Ring</h3>
+        <p>J.R.R. Tolkien</p>
+        <a href="#">Xem chi tiết</a>
+      </div>
+
+      <div class="book-card">
+        <img src="https://m.media-amazon.com/images/I/91dSMhdIzTL.jpg"/>
+        <h3>A Song Of Ice And Fire</h3>
+        <p>George R.R. Martin</p>
+        <a href="#">Xem chi tiết</a>
+      </div>
+
+      <div class="book-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Kafka_Murakami.jpg"/>
+        <h3>Kafka bên bờ biển</h3>
+        <p>Haruki Murakami</p>
+        <a href="#">Xem chi tiết</a>
+      </div>
+
+      <div class="book-card">
+        <img src="https://m.media-amazon.com/images/I/81w4nMRuF-L.jpg"/>
+        <h3>Thần khúc</h3>
+        <p>Dante Alighieri</p>
+        <a href="#">Xem chi tiết</a>
+      </div>
+
+      <div class="book-card">
+        <img src="https://m.media-amazon.com/images/I/71P3CMp9fWL.jpg"/>
+        <h3>Faust</h3>
+        <p>Johann Wolfgang von Goethe</p>
+        <a href="#">Xem chi tiết</a>
+      </div>
+
+      <div class="book-card">
+        <img src="https://m.media-amazon.com/images/I/71KilybDOoL.jpg"/>
+        <h3>The Idiot</h3>
+        <p>Fyodor Dostoyevsky</p>
+        <a href="#">Xem chi tiết</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- File JS -->
+  <script src="timkiem.js"></script>
+</body>
+</html>
