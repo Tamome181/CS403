@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mượn / Trả — Thư viện</title>
+  <!-- Gọi file style.css hiện tại để dùng chung giao diện -->
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* ===== CSS phụ cho bảng danh sách mượn ===== */
+    .loan-table {
+      width: 100%;
+      border-collapse: collapse; /* gộp viền */
+      margin-top: 10px;
+      font-size: 14px;
+    }
+    .loan-table th, .loan-table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    .loan-table th {
+      background: #f8fafc;
+      color: #374151;
+    }
+    .loan-table tr:hover {
+      background: #f1f5f9; /* đổi màu khi hover để dễ nhìn */
+    }
+    .muted { color: #6b7280; }
+  </style>
+</head>
+<body>
+  <!-- Sidebar trái -->
+  <div class="sidebar">
+    <div class="logo">
+      <img src="https://img.icons8.com/color/48/open-book.png" alt="logo"/>
+    </div>
+    <ul>
+      <!-- Menu điều hướng -->
+      <li><a href="Trangchu.html"><img src="https://img.icons8.com/ios-filled/24/home.png"/>Trang chủ</a></li>
+      <li><a href="borrow-return.html"><img src="https://img.icons8.com/ios-filled/24/return-book.png"/> Mượn - Trả sách</a></li>
+      <li><img src="https://img.icons8.com/ios-filled/24/chat.png"/> Chat</li>
+      <li><img src="https://img.icons8.com/ios-filled/24/combo-chart.png"/> Báo cáo thống kê</li>
+    </ul>
+  </div>
+
+  <!-- Khu vực chính (main) -->
+  <div class="main">
+    <!-- Thanh topbar -->
+    <div class="topbar">
+      <h1>Quản lý Mượn — Trả</h1>
+      <div class="user-icon"><img src="https://img.icons8.com/ios-filled/32/user.png" alt="user"/></div>
+    </div>
+
+    <!-- Thanh tìm kiếm + nút refresh -->
+    <div class="search-bar">
+      <input type="search" id="searchBox" placeholder="Tìm theo tiêu đề / tên người mượn / SDT" />
+      <button id="refreshBtn"><img src="https://img.icons8.com/ios-filled/20/ffffff/refresh.png" alt="Làm mới"/></button>
+    </div>
+
+    <!-- Nội dung chính: danh sách mượn trả -->
+    <div style="padding: 0 20px 20px;">
+      <div class="card" style="padding:14px;">
+        <h2 style="margin-bottom:8px;">Danh sách sách đang mượn</h2>
+        
+        <!-- Container sẽ chứa bảng danh sách -->
+        <div id="loanListContainer">
+          <!-- Tạo sẵn bảng với thead cố định -->
+          <table class="loan-table">
+            <thead>
+              <tr>
+                <th>Tiêu đề</th>
+                <th>Người mượn</th>
+                <th>SĐT</th>
+                <th>Ngày mượn</th>
+                <th>Hạn trả</th>
+                <th>Trạng thái</th>
+                <th>Gia hạn</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- JS sẽ thay thế nội dung bên trong tbody này -->
+              <tr>
+                <td colspan="8" class="muted">Đang tải dữ liệu mượn...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script xử lý dữ liệu mượn trả -->
+  <script src="borrowReturn.js"></script>
+  <!-- Script sửa sidebar (đảm bảo active đúng) -->
+  <script src="sidebar-fix.js"></script>
+
+  <!-- Script phụ: xử lý tìm kiếm và refresh -->
+  <script>
+    (function(){
+      const searchBox = document.getElementById('searchBox');
+      const refreshBtn = document.getElementById('refreshBtn');
+      const container = document.getElementById('loanListContainer');
+
+      // Hàm lọc dữ liệu trong bảng theo ô tìm kiếm
+      function applyFilter() {
+        const q = (searchBox.value || '').toLowerCase().trim();
+        const rows = Array.from(container.querySelectorAll('tbody tr'));
+        rows.forEach(tr => {
+          const text = (tr.innerText || '').toLowerCase();
+          // Nếu tr chứa chuỗi tìm thì hiện, không thì ẩn
+          tr.style.display = (!q || text.includes(q)) ? '' : 'none';
+        });
+      }
+
+      // Khi gõ trong ô tìm kiếm → áp filter
+      searchBox.addEventListener('input', applyFilter);
+
+      // Khi bấm nút refresh → reload lại trang
+      refreshBtn.addEventListener('click', () => location.reload());
+
+      // Quan sát container: khi JS render lại bảng thì filter cũng chạy lại
+      const mo = new MutationObserver(() => setTimeout(applyFilter, 50));
+      mo.observe(container, { childList:true, subtree:true });
+
+      // Chạy filter lần đầu sau khi load
+      setTimeout(applyFilter, 200);
+    })();
+  </script>
+</body>
+</html>
+

@@ -15,7 +15,7 @@
     </div>
     <ul>
       <li><img src="https://img.icons8.com/ios-filled/24/home.png"/> Trang chủ</li>
-      <li><img src="https://img.icons8.com/ios-filled/24/return-book.png"/> Mượn - Trả sách</li>
+      <li><a href="borrow-return.html"><img src="https://img.icons8.com/ios-filled/24/return-book.png"/> Mượn - Trả sách</a></li>
       <li><img src="https://img.icons8.com/ios-filled/24/chat.png"/> Chat</li>
       <li><img src="https://img.icons8.com/ios-filled/24/combo-chart.png"/> Báo cáo thống kê</li>
     </ul>
@@ -51,7 +51,7 @@
       </div>
 
       <div class="book-card" 
-           data-status="Đã mượn" 
+           data-status="Có sẵn" 
            data-type="Tiểu thuyết" 
            data-volumes="image/asoiaf_vol1.jpg; image/asoiaf_vol2.jpg; image/asoiaf_vol3.jpg; image/asoiaf_vol4.jpg; image/asoiaf_vol5.jpg">
         <img src="image/ASAIAF.webp"/>
@@ -128,6 +128,26 @@
   <script src="timkiem.js"></script>
   <script src="chitietsach.js"></script>
   <script src="home.js"></script>
+  <script src="borrowReturn.js"></script>
 
+
+  <!-- Borrow Modal -->
+  <div id="borrowModal" class="modal hidden">
+    <div class="modal-overlay" id="borrowOverlay"></div>
+    <div class="modal-content">
+      <button class="close-btn" id="closeBorrowModal">&times;</button>
+      <h2>Mượn sách: <span id="borrowBookTitle"></span></h2>
+      <form id="borrowForm">
+        <label>Họ tên:<br/><input type="text" id="borrowerName" required></label><br/>
+        <label>Số điện thoại:<br/><input type="text" id="borrowerPhone" required></label><br/>
+        <div class="modal-actions">
+          <button type="submit">Xác nhận mượn</button>
+          <button type="button" id="cancelBorrow">Hủy</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="sidebar-fix.js"></script>
 </body>
 </html>
