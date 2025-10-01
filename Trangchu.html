@@ -23,12 +23,12 @@
 
   <!-- Nội dung chính -->
   <div class="main">
-    <div class="topbar">
-      <h1>Trang web quản lý thư viện</h1>
-      <div class="user-icon">
-        <img src="https://img.icons8.com/ios-filled/40/user.png" alt="user"/>
-      </div>
+     <div class="topbar">
+       <h1>Trang web quản lý thư viện</h1>
+      <div class="user-icon" id="loginIcon">
+       <img src="https://img.icons8.com/ios-filled/40/user.png" alt="user"/>
     </div>
+</div>
 
     <!-- Thanh tìm kiếm -->
     <div class="search-bar">
@@ -124,12 +124,32 @@
     <img id="previewImg" src="" alt="preview"/>
   </div>
 
+  <!-- ===== Modal đăng nhập ===== -->
+<div id="loginModal" class="modal hidden">
+  <div class="modal-overlay" id="loginOverlay"></div>
+  <div class="modal-content">
+    <button class="close-btn" id="closeLogin">&times;</button>
+    <h2>Đăng nhập</h2>
+    <form id="loginForm">
+      <label>Tài khoản:<br/><input type="text" id="username" required></label><br/>
+      <label>Mật khẩu:<br/><input type="password" id="password" required></label><br/>
+      <div class="modal-actions">
+        <button type="submit">Đăng nhập</button>
+        <button type="button" id="cancelLogin">Hủy</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
   <!-- File JS -->
   <script src="timkiem.js"></script>
   <script src="chitietsach.js"></script>
   <script src="home.js"></script>
   <script src="borrowReturn.js"></script>
-
+  <script src="sidebar-fix.js"></script>
+  <script src="login.js"></script>
 
   <!-- Borrow Modal -->
   <div id="borrowModal" class="modal hidden">
@@ -147,7 +167,7 @@
       </form>
     </div>
   </div>
+  
 
-  <script src="sidebar-fix.js"></script>
 </body>
 </html>

@@ -1,36 +1,4 @@
-
-// Add a "Mượn" button into the detail modal and handle clicks
-(function(){
-  // Wait until DOM elements exist
-  document.addEventListener('DOMContentLoaded', function(){
-    const modalContent = document.querySelector('.modal-content');
-    if(!modalContent) return;
-    // create borrow button area
-    const borrowArea = document.createElement('div');
-    borrowArea.style.marginTop = '10px';
-    const borrowBtn = document.createElement('button');
-    borrowBtn.textContent = 'Mượn';
-    borrowBtn.id = 'detailBorrowBtn';
-    borrowBtn.style.marginRight = '8px';
-    borrowArea.appendChild(borrowBtn);
-    modalContent.appendChild(borrowArea);
-
-    borrowBtn.addEventListener('click', function(){
-      // read title and status from modal
-      const title = document.getElementById('detailTitle')?.innerText?.trim();
-      const status = document.getElementById('detailStatus')?.innerText?.trim();
-      if(!title) { alert('Không xác định được sách để mượn.'); return; }
-      if(status && status.toLowerCase().includes('đã mượn')) {
-        alert('Sách hiện đang không có sẵn để mượn.');
-        return;
-      }
-      // open borrow modal via custom event
-      const ev = new CustomEvent('openBorrowModal', {detail:{title}});
-      document.dispatchEvent(ev);
-    });
-  });
-})();
-
+// --- Xử lý modal chi tiết sách ---
 document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('detailModal');
   const overlay = document.getElementById('modalOverlay');
@@ -46,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const volumePreview = document.getElementById('volumePreview');
   const previewImg = document.getElementById('previewImg');
 
-  // Xử lý nút "Xem chi tiết"
+  // Khi nhấn "Xem chi tiết" trong danh sách sách
   document.querySelectorAll('.details-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -58,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
       detailType.textContent = card.dataset.type || '';
       detailStatus.textContent = card.dataset.status || '';
 
-      // Xử lý số tập và ảnh
+      // Render danh sách tập
       detailVolumes.innerHTML = "";
       const volumesData = card.dataset.volumes;
       if (volumesData) {
@@ -70,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
           img.src = src;
           img.classList.add("volume-thumb");
 
-          // 👉 Chuyển từ hover sang click để mở overlay
+          // Xem ảnh tập khi click
           img.addEventListener("click", () => {
             previewImg.src = src;
             volumePreview.classList.remove("hidden");
@@ -87,16 +55,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Đóng modal
+  // Đóng modal chi tiết
   function closeModal() {
     modal.classList.add('hidden');
-    volumePreview.classList.add('hidden'); // tắt luôn preview nếu đang mở
+    volumePreview.classList.add('hidden');
     volumePreview.classList.remove('show');
   }
   closeBtn.addEventListener('click', closeModal);
   overlay.addEventListener('click', closeModal);
 
-  // Đóng overlay preview khi click vào
+  // Đóng overlay preview khi click
   volumePreview.addEventListener("click", () => {
     volumePreview.classList.remove("show");
     setTimeout(() => volumePreview.classList.add("hidden"), 200);
@@ -104,14 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
-
-
-// --- Xử lý modal mượn (phiên bản chắc chắn, tạo modal nếu thiếu) ---
+// --- Xử lý modal mượn ---
 (function(){
   function $id(id){ return document.getElementById(id); }
 
-  // Tạo modal mượn động nếu trong DOM chưa có
+  // Tạo modal mượn nếu chưa có trong DOM
   function taoModalNeuThieu() {
     if ($id('borrowModal')) return;
     const modalHtml = `
@@ -133,11 +98,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const wrapper = document.createElement('div');
     wrapper.innerHTML = modalHtml;
     document.body.appendChild(wrapper.firstElementChild);
-    // Thêm style cơ bản nếu chưa có để modal hiển thị đẹp
-    const styleId = 'borrowModalAutoStyle';
-    if (!document.getElementById(styleId)) {
+
+    // Style cơ bản
+    if (!document.getElementById('borrowModalAutoStyle')) {
       const style = document.createElement('style');
-      style.id = styleId;
+      style.id = 'borrowModalAutoStyle';
       style.textContent = `
         .modal { position: fixed; inset: 0; display:flex; align-items:center; justify-content:center; z-index:9999; }
         .modal.hidden { display:none; }
@@ -149,12 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Khi DOM sẵn sàng, đảm bảo modal tồn tại
-  document.addEventListener('DOMContentLoaded', function(){
-    try { taoModalNeuThieu(); } catch(e) { console.error('taoModalNeuThieu thất bại', e); }
-  });
+  document.addEventListener('DOMContentLoaded', taoModalNeuThieu);
 
-  // Lấy các phần tử modal (và tạo nếu cần)
   function layPhanTuModal() {
     taoModalNeuThieu();
     return {
@@ -171,29 +132,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentBorrowTitle = null;
 
-  // Mở modal mượn với tiêu đề sách
   function moModalMuon(title){
-    if(!title) {
-      console.error('moModalMuon được gọi nhưng không có title');
-      alert('Không xác định được sách để mượn.');
-      return;
-    }
     const els = layPhanTuModal();
-    if(!els.borrowModal || !els.borrowBookTitle || !els.borrowForm) {
-      console.error('Các phần tử modal thiếu sau khi tạo, els=', els);
-      alert('Gặp lỗi khi mở modal mượn (thiếu giao diện). Vui lòng tải lại trang.');
-      return;
-    }
     currentBorrowTitle = title;
-    try {
-      els.borrowBookTitle.textContent = title;
-      els.borrowerName.value = '';
-      els.borrowerPhone.value = '';
-      els.borrowModal.classList.remove('hidden');
-    } catch (err) {
-      console.error('Lỗi khi mở modal mượn', err);
-      alert('Gặp lỗi khi mở modal mượn. Kiểm tra console để biết chi tiết.');
-    }
+    els.borrowBookTitle.textContent = title;
+    els.borrowerName.value = '';
+    els.borrowerPhone.value = '';
+    els.borrowModal.classList.remove('hidden');
   }
 
   function dongModal() {
@@ -201,29 +146,36 @@ document.addEventListener('DOMContentLoaded', () => {
     if(els.borrowModal) els.borrowModal.classList.add('hidden');
   }
 
-  // Xử lý click global để đóng modal khi nhấn nút đóng/hủy/overlay
+  // Đóng modal khi nhấn hủy/overlay
   document.addEventListener('click', function(e){
-    const target = e.target;
-    if(!target) return;
-    if(target.id === 'closeBorrowModal') { dongModal(); }
-    if(target.id === 'cancelBorrow') { dongModal(); }
-    if(target.id === 'borrowOverlay') { dongModal(); }
+    if (['closeBorrowModal','cancelBorrow','borrowOverlay'].includes(e.target.id)) {
+      dongModal();
+    }
   });
 
-  // Lắng nghe sự kiện tùy chỉnh để mở modal
+  // Lắng nghe sự kiện mở modal mượn
   document.addEventListener('openBorrowModal', (e) => {
-    const title = e.detail && e.detail.title;
-    moModalMuon(title);
+    moModalMuon(e.detail && e.detail.title);
   });
 
-  // Xử lý submit form mượn
+  // Submit form mượn
   document.addEventListener('submit', function(ev){
     const form = ev.target;
     if(!form || form.id !== 'borrowForm') return;
     ev.preventDefault();
+
+    // Kiểm tra đăng nhập
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      alert('⚠️ Bạn cần đăng nhập trước khi mượn sách!');
+      const loginModal = document.getElementById('loginModal');
+      if (loginModal) loginModal.classList.remove('hidden');
+      return;
+    }
+
     const els = layPhanTuModal();
-    const name = (els.borrowerName && els.borrowerName.value || '').trim();
-    const phone = (els.borrowerPhone && els.borrowerPhone.value || '').trim();
+    const name = (els.borrowerName.value || '').trim();
+    const phone = (els.borrowerPhone.value || '').trim();
     if(!name || !phone) { alert('Vui lòng nhập tên và số điện thoại.'); return; }
 
     try {
@@ -241,42 +193,47 @@ document.addEventListener('DOMContentLoaded', () => {
       };
       loans.push(loan);
       localStorage.setItem('loans', JSON.stringify(loans));
-      // Đặt flag để các tab khác có thể cập nhật
       localStorage.setItem('lastBorrowed', JSON.stringify({bookTitle: loan.bookTitle, at: new Date().toISOString()}));
-      alert('Mượn thành công!');
+      alert('✅ Mượn thành công!');
       dongModal();
     } catch(err) {
       console.error('Lưu bản ghi mượn thất bại', err);
-      alert('Lỗi khi lưu bản ghi mượn. Kiểm tra console.');
+      alert('Lỗi khi lưu bản ghi mượn.');
     }
   });
 
-  // Nếu modal nội dung chi tiết có sẵn, tự chèn nút "Mượn" (không chèn nhiều lần)
+  // --- Chèn nút "Mượn" vào chi tiết sách ---
   document.addEventListener('DOMContentLoaded', function(){
-    try {
-      const modalContent = document.querySelector('.modal-content');
-      if(!modalContent) return;
-      if(document.getElementById('detailBorrowBtn')) return;
-      const borrowArea = document.createElement('div');
-      borrowArea.style.marginTop = '10px';
-      const borrowBtn = document.createElement('button');
-      borrowBtn.textContent = 'Mượn';
-      borrowBtn.id = 'detailBorrowBtn';
-      borrowBtn.style.marginRight = '8px';
-      borrowArea.appendChild(borrowBtn);
-      modalContent.appendChild(borrowArea);
+    const modalContent = document.querySelector('.modal-content');
+    if(!modalContent) return;
+    if(document.getElementById('detailBorrowBtn')) return;
 
-      borrowBtn.addEventListener('click', function(){
-        const titleElem = document.getElementById('detailTitle') || document.querySelector('.book-card h3');
-        const title = titleElem && titleElem.innerText && titleElem.innerText.trim();
-        const statusElem = document.getElementById('detailStatus');
-        const status = statusElem && statusElem.innerText ? statusElem.innerText : '';
-        if(!title) { alert('Không xác định được sách để mượn.'); return; }
-        if(status.toLowerCase().includes('đã mượn')) { alert('Sách hiện đang không có sẵn để mượn.'); return; }
-        const ev = new CustomEvent('openBorrowModal', {detail:{title}});
-        document.dispatchEvent(ev);
-      });
-    } catch(e) { console.error('Chèn nút mượn thất bại', e); }
+    const borrowArea = document.createElement('div');
+    borrowArea.style.marginTop = '10px';
+    const borrowBtn = document.createElement('button');
+    borrowBtn.textContent = 'Mượn';
+    borrowBtn.id = 'detailBorrowBtn';
+    borrowBtn.style.marginRight = '8px';
+    borrowArea.appendChild(borrowBtn);
+    modalContent.appendChild(borrowArea);
+
+    borrowBtn.addEventListener('click', function(e){
+  e.preventDefault();
+
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  if (!isLoggedIn) {
+    alert('⚠️ Bạn cần đăng nhập trước khi mượn sách!');
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal) loginModal.classList.remove('hidden');
+    return;
+  }
+
+  // Nếu đã đăng nhập thì mở modal mượn
+  const titleElem = document.getElementById('detailTitle');
+  const title = titleElem ? titleElem.innerText.trim() : '';
+  const ev = new CustomEvent('openBorrowModal', {detail:{title}});
+  document.dispatchEvent(ev);
+});
+
   });
-
 })();
