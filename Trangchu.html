@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="thongke.js"></script>
+
   <!-- Sidebar bên trái -->
   <div class="sidebar">
     <div class="logo">
@@ -17,7 +20,7 @@
       <li><img src="https://img.icons8.com/ios-filled/24/home.png"/> Trang chủ</li>
       <li><a href="borrow-return.html"><img src="https://img.icons8.com/ios-filled/24/return-book.png"/> Mượn - Trả sách</a></li>
       <li><img src="https://img.icons8.com/ios-filled/24/chat.png"/> Chat</li>
-      <li><img src="https://img.icons8.com/ios-filled/24/combo-chart.png"/> Báo cáo thống kê</li>
+      <<li><a href="report.html"><img src="https://img.icons8.com/ios-filled/24/combo-chart.png"/> Báo cáo thống kê</a></li>
     </ul>
   </div>
 
@@ -100,6 +103,14 @@
         <a href="#" class="details-btn">Xem chi tiết</a>
       </div>
     </div>
+    <div class="report hidden" id="reportSection">
+  
+      <h2>Báo cáo thống kê</h2>
+    <div class="report-container">
+      <canvas id="chartByType"></canvas>
+      <canvas id="chartByStatus"></canvas>
+    </div>
+  </div>
   </div>
 
   <!-- Modal chi tiết sách -->
