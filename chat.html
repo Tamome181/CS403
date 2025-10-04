@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chat — Thư viện</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* Chat box CSS */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 100px); /* trừ topbar */
+      padding: 20px;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #f9fafb;
+      overflow-y: auto;
+      margin-bottom: 12px;
+    }
+    .message {
+      margin: 6px 0;
+      padding: 8px 12px;
+      border-radius: 12px;
+      max-width: 60%;
+      line-height: 1.4;
+    }
+    .message.user {
+      background: #2563eb;
+      color: white;
+      align-self: flex-end;
+    }
+    .message.bot {
+      background: #e5e7eb;
+      color: #111827;
+      align-self: flex-start;
+    }
+    .chat-input {
+      display: flex;
+      gap: 8px;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .chat-input button {
+      padding: 10px 16px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .chat-input button:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+      <img src="https://img.icons8.com/color/48/open-book.png" alt="logo"/>
+    </div>
+    <ul>
+      <li><a href="Trangchu.html"><img src="https://img.icons8.com/ios-filled/24/home.png"/>Trang chủ</a></li>
+      <li><a href="borrow-return.html"><img src="https://img.icons8.com/ios-filled/24/return-book.png"/> Mượn - Trả sách</a></li>
+      <li><a href="chat.html"></a><img src="https://img.icons8.com/ios-filled/24/chat.png"/> Chat</li>
+      <li><a href="report.html"><img src="https://img.icons8.com/ios-filled/24/combo-chart.png"/> Báo cáo thống kê</a></li>
+    </ul>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Topbar -->
+    <div class="topbar">
+      <h1>Chat Hỗ trợ</h1>
+      <div class="user-icon"><img src="https://img.icons8.com/ios-filled/32/user.png" alt="user"/></div>
+    </div>
+
+    <!-- Chat Content -->
+    <!-- Chat Content -->
+<div class="chat-container">
+  <iframe 
+    src="https://landbot.online/v3/H-3164862-MEVJ965FNOB697GE/index.html" 
+    width="100%" 
+    height="100%" 
+    style="border: none; border-radius: 8px;">
+  </iframe>
+</div>
+
+  </div>
+
+  <script src="sidebar-fix.js"></script>
+  <script>
+    const input = document.getElementById('chatInput');
+    const btn = document.getElementById('sendBtn');
+    const chatBox = document.getElementById('chatMessages');
+
+    function addMessage(text, type="user") {
+      const div = document.createElement("div");
+      div.className = "message " + type;
+      div.textContent = text;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    btn.addEventListener("click", () => {
+      const text = input.value.trim();
+      if (!text) return;
+      addMessage(text, "user");
+      input.value = "";
+      setTimeout(() => {
+        addMessage("Bot trả lời: " + text, "bot");
+      }, 600);
+    });
+
+    input.addEventListener("keypress", e => {
+      if (e.key === "Enter") btn.click();
+    });
+  </script>
+</body>
+</html>

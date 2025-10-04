@@ -332,3 +332,59 @@ canvas {
 .report-table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
+
+/* Chat box CSS */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 100px); /* trừ topbar */
+      padding: 20px;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #f9fafb;
+      overflow-y: auto;
+      margin-bottom: 12px;
+    }
+    .message {
+      margin: 6px 0;
+      padding: 8px 12px;
+      border-radius: 12px;
+      max-width: 60%;
+      line-height: 1.4;
+    }
+    .message.user {
+      background: #2563eb;
+      color: white;
+      align-self: flex-end;
+    }
+    .message.bot {
+      background: #e5e7eb;
+      color: #111827;
+      align-self: flex-start;
+    }
+    .chat-input {
+      display: flex;
+      gap: 8px;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .chat-input button {
+      padding: 10px 16px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .chat-input button:hover {
+      background: #1d4ed8;
+    }
